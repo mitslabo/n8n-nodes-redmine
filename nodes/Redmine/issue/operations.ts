@@ -12,6 +12,12 @@ export const issueOperations: INodeProperties[] = [
     },
     options: [
       {
+        name: 'Add Watcher',
+        value: 'addWatcher',
+        description: 'Add a watcher to an issue',
+        action: 'Add a watcher to an issue',
+      },
+      {
         name: 'Create',
         value: 'create',
         description: 'Create an issue',
@@ -40,12 +46,6 @@ export const issueOperations: INodeProperties[] = [
         value: 'update',
         description: 'Update an issue',
         action: 'Update an issue',
-      },
-      {
-        name: 'Add Watcher',
-        value: 'addWatcher',
-        description: 'Add a watcher to an issue',
-        action: 'Add a watcher to an issue',
       },
     ],
     default: 'get',

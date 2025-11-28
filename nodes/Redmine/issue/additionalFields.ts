@@ -84,18 +84,18 @@ export const additionalFields: INodeProperties = {
       description: 'The estimated hours for the issue',
     },
     {
-      displayName: 'Is Private',
-      name: 'is_private',
-      type: 'boolean',
-      default: false,
-      description: 'Whether the issue is private or not',
-    },
-    {
       displayName: 'Fixed Version ID',
       name: 'fixed_version_id',
       type: 'string',
       default: '',
       description: 'The fixed version ID of the issue. Also known as Target Version ID.',
+    },
+    {
+      displayName: 'Is Private',
+      name: 'is_private',
+      type: 'boolean',
+      default: false,
+      description: 'Whether the issue is private or not',
     },
     {
       displayName: 'Parent Issue ID',
