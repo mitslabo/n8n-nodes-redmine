@@ -23,6 +23,7 @@ Version minima soportada de Redmine: `5.0`.
 - Runtime minimo: Node.js `>=18.10`.
 - Package manager esperado: `pnpm@9.1.4`.
 - Lenguaje: TypeScript, CommonJS, salida en `dist/`.
+- Tests unitarios: Vitest.
 - API n8n: `n8nNodesApiVersion: 1`.
 - Flujo de release esperado: publicar en npm usando `pnpm prepublishOnly` antes de publicar.
 
@@ -31,6 +32,7 @@ Comandos habituales:
 ```bash
 pnpm build
 pnpm lint
+pnpm test
 pnpm format
 pnpm dev
 pnpm prepublishOnly
@@ -41,11 +43,12 @@ Antes de cerrar cambios de codigo, ejecutar como minimo:
 ```bash
 pnpm build
 pnpm lint
+pnpm test
 ```
 
 Si se tocaron descripciones, propiedades o estructura del nodo, tambien revisar manualmente que el nodo cargue en n8n y que los `displayOptions` muestren solo los campos esperados.
 
-El proyecto debe sumar tests unitarios. Priorizar tests que validen el armado de requests, paginacion, filtros, payloads y headers sin depender de una instancia Redmine real.
+Los tests unitarios viven en `tests/` y usan Vitest. Priorizan validar el armado de requests, paginacion, filtros, payloads, headers, errores y `pairedItem` sin depender de una instancia Redmine real.
 
 ## Mapa del repositorio
 
@@ -62,6 +65,11 @@ El proyecto debe sumar tests unitarios. Priorizar tests que validen el armado de
 - `nodes/Redmine/UserOperations.ts`: operaciones y campos de User.
 - `nodes/Redmine/UserExecute.ts`: ejecucion HTTP de operaciones de User.
 - `nodes/Redmine/redmine.svg`: icono empaquetado por `gulp build:icons`.
+- `tests/helpers.ts`: contexto fake de `IExecuteFunctions` para unit tests.
+- `tests/IssueExecute.test.ts`: unit tests de operaciones de Issue.
+- `tests/ProjectExecute.test.ts`: unit tests de operaciones de Project.
+- `tests/UserExecute.test.ts`: unit tests de operaciones de User.
+- `vitest.config.mts`: configuracion de Vitest, incluyendo alias para `n8n-workflow`.
 - `package.json`: metadata n8n, scripts, keywords y archivos publicables.
 
 ## Patrones de implementacion
@@ -110,7 +118,7 @@ Para operaciones destructivas:
 7. Preservar `pairedItem`.
 8. Verificar `continueOnFail` desde `Redmine.node.ts`.
 9. Actualizar `README.md` si cambia la superficie publica.
-10. Ejecutar `pnpm build` y `pnpm lint`.
+10. Ejecutar `pnpm test`, `pnpm build` y `pnpm lint`.
 11. Agregar o actualizar tests unitarios para el armado del request cuando la operacion tenga filtros, paginacion, payload o headers no triviales.
 
 ## Checklist para agregar un recurso nuevo
@@ -146,6 +154,7 @@ Para operaciones destructivas:
 - Las operaciones que trabajan sobre multiples items conservan `pairedItem`.
 - Los cambios no dependen de una instancia Redmine especifica, salvo fixtures o ejemplos claramente marcados.
 - Los tests unitarios cubren la logica nueva siempre que sea razonable aislarla de n8n y de Redmine.
+- La paginacion real de `returnAll=true` esta marcada como `it.todo` en las suites actuales hasta que se implemente.
 
 ## Prioridades de evolucion
 
