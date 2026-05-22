@@ -298,7 +298,7 @@ export async function executeIssueOperation(
     if (additionalFields.status_id) issueData.status_id = additionalFields.status_id;
     if (additionalFields.tracker_id) issueData.tracker_id = additionalFields.tracker_id;
     if (additionalFields.priority_id) issueData.priority_id = additionalFields.priority_id;
-    if (additionalFields.assigned_to_id) issueData.assigned_to_id = additionalFields.assigned_to_id;
+    if (additionalFields.assigned_to_id != null) issueData.assigned_to_id = additionalFields.assigned_to_id;
     if (additionalFields.parent_issue_id) issueData.parent_issue_id = additionalFields.parent_issue_id;
     if (additionalFields.fixed_version_id) issueData.fixed_version_id = additionalFields.fixed_version_id;
     if (additionalFields.start_date) issueData.start_date = additionalFields.start_date;
