@@ -376,7 +376,49 @@ export async function executeIssueOperation(
   let responseData;
 
   try {
-    responseData = await this.helpers.request(options);
+    if (operation === 'getAll' && (this.getNodeParameter('returnAll', i) as boolean)) {
+      const allIssues: any[] = [];
+      const pageSize = 100;
+      let offset = 0;
+      let totalCount = Number.POSITIVE_INFINITY;
+
+      while (offset < totalCount) {
+        const pageOptions: IRequestOptions = {
+          ...options,
+          qs: {
+            ...qs,
+            limit: pageSize,
+            offset,
+          },
+        };
+
+        const pageResponse = await this.helpers.request(pageOptions);
+        const issues = Array.isArray(pageResponse?.issues) ? pageResponse.issues : [];
+
+        allIssues.push(...issues);
+
+        if (typeof pageResponse?.total_count === 'number') {
+          totalCount = pageResponse.total_count;
+        } else if (issues.length < pageSize) {
+          break;
+        }
+
+        if (issues.length === 0) {
+          break;
+        }
+
+        offset += issues.length;
+      }
+
+      responseData = {
+        issues: allIssues,
+        total_count: allIssues.length,
+        offset: 0,
+        limit: allIssues.length,
+      };
+    } else {
+      responseData = await this.helpers.request(options);
+    }
   } catch (error) {
     throw new NodeOperationError(this.getNode(), `Redmine API error: ${error.message}`, { itemIndex: i });
   }
